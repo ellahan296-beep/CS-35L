@@ -37,6 +37,16 @@ export const login = (email, password) => {
   });
 };
 
+export const signup = (username, email, password) =>
+{
+    return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: true, message: "Account created!" });
+    }, 2000);
+  });
+};
+
+
 // src/services/authService.js
 
 // example of non-mock authservice.js
