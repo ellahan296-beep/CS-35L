@@ -1,9 +1,10 @@
+import './App.css'
 import { useState } from 'react'
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import './App.css'
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import LogIn from './frontend/Login'
+import { LogIn, SignUp } from './frontend/Login_Signup.jsx'
+import  Dashboard  from './dashboard.jsx'
+import { CssBaseline } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -28,7 +29,15 @@ function App() {
   return(
     <>
     <ThemeProvider theme={theme}>
-      <LogIn />
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route path='/' element={<Navigate to="/login" />}/>
+          <Route path='/login' element={<LogIn />} />
+          <Route path='/signup' element={<SignUp/>} />
+          <Route path='/dashboard' element={<Dashboard />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
     </>
   )

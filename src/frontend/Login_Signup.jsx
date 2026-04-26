@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Typography, Paper, Container, TextField, Box, Link} from '@mui/material';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {login} from '../services/authService'
-import { Link as RouterLink } from 'react-router-dom';
+import {login, signup} from '../services/authService'
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 
 export const LogIn = () =>
@@ -11,6 +11,8 @@ export const LogIn = () =>
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    let navigate = useNavigate();
 
     const handleClick = async (e) =>
     {
@@ -31,6 +33,7 @@ export const LogIn = () =>
             console.log("Login Successful: ", data);
             localStorage.setItem("token", data.token);
             setLoading(false);
+            navigate('/dashboard', {replace:true});
         }
         catch(err)
         {
@@ -116,7 +119,7 @@ export const LogIn = () =>
           </Paper>
           <Typography align="center" sx={{ mt: 2 }}>
             Don't have an account?{' '}
-            <Link component={RouterLink} to="/signup" sx={{ fontWeight: 'bold' }}>
+            <Link component={RouterLink} to="/signup" sx={{ fontWeight: 'bold', color: '#f2a900'}}>
               Sign Up
             </Link>
           </Typography>
@@ -132,6 +135,7 @@ export const SignUp = () =>
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    let navigate = useNavigate();
 
     const handleClick = async (e) =>
     {
@@ -152,6 +156,7 @@ export const SignUp = () =>
             console.log("Account creation successful: ", data);
             localStorage.setItem("token", data.token);
             setLoading(false);
+            navigate('/dashboard', { replace:true });
         }
         catch(err)
         {
@@ -185,7 +190,7 @@ export const SignUp = () =>
               p: 4, 
               width: '100%', 
               borderRadius: 2,
-              borderTop: '5px solid #f2a900' 
+              borderTop: '5px solid #2d68c4' 
             }}
           >
             <Typography 
@@ -234,7 +239,7 @@ export const SignUp = () =>
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
+                color="secondary"
                 disabled={loading}
                 sx={{ mt: 3, mb: 2, py: 1.5, fontWeight: 'bold' }}
               >
