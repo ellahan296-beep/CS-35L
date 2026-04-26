@@ -1,31 +1,38 @@
 import { useState } from 'react'
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import './App.css'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import LogIn from './frontend/Login'
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2d68c4',
+    },
+    secondary: {
+      main: '#f2a900', // Gold
+    },
+  },
+  typography: {
+    fontFamily: '"Quicksand", sans-serif',
+    h1: {
+      fontWeight: 700,
+    },
+  },
+});
+
 
 function App() {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-
-  function handleClick()
-  {
-      preventDefault();
-  }
-  return (
+  
+  return(
     <>
-    <Box>
-        <form className="email">
-            <TextField required id="email" label="Email" variant="outlined" />
-        </form>
-        <form className="password">
-            <TextField required id="password" label="Password" variant="outlined" />
-        </form>
-        <div>
-            <button className="submit" onSubmit={handleClick}>Submit</button>
-        </div>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <LogIn />
+    </ThemeProvider>
     </>
-  );
+  )
+
 }
 
 export default App

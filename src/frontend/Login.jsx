@@ -3,22 +3,6 @@ import {Button, Typography, Paper, Container, TextField, Box} from '@mui/materia
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {login} from '../services/authService'
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2d68c4',
-    },
-    secondary: {
-      main: '#f2a900', // Gold
-    },
-  },
-  typography: {
-    fontFamily: '"Quicksand", sans-serif',
-    h1: {
-      fontWeight: 700,
-    },
-  },
-});
 
 const LogIn = () =>
 {
@@ -51,8 +35,8 @@ const LogIn = () =>
         {
             if (err.status === 401)
             {
-                setError("Incorrect credentials")
-                console.error("Incorrect credentials");
+                setError(err.message)
+                console.error(err.message);
                 setLoading(false);
             }
             else
@@ -64,7 +48,6 @@ const LogIn = () =>
         }
     }
     return (
-    <ThemeProvider theme={theme}>
       <Container maxWidth="sm">
         <Box 
           sx={{
@@ -123,15 +106,15 @@ const LogIn = () =>
                 fullWidth
                 variant="contained"
                 color="primary"
+                disabled={loading}
                 sx={{ mt: 3, mb: 2, py: 1.5, fontWeight: 'bold' }}
               >
-                Log In
+                {loading ? "Validating..." : "Log In"}
               </Button>
             </Box>
           </Paper>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 }
 

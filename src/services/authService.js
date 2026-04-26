@@ -27,7 +27,7 @@ export const login = (email, password) => {
         
         resolve(mockResponse);
       } else {
-        // Mock error response from Node.js (e.g., 401 Unauthorized)
+        // Mock error response from Node.js 
         reject({
           status: 401,
           message: "Invalid email or password. Please try again."
@@ -36,3 +36,29 @@ export const login = (email, password) => {
     }, 2000);
   });
 };
+
+// src/services/authService.js
+
+// example of non-mock authservice.js
+
+// const API_URL = "http://localhost:5000/api/auth"; // Your Node.js URL
+
+// export const login = async (email, password) => {
+//   // 1. The Request
+//   const response = await fetch(`${API_URL}/login`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json', // Telling Node.js to expect JSON
+//     },
+//     body: JSON.stringify({ email, password }), // Sending the data
+//   });
+
+//   // 2. Handle non-200 status codes (401, 500, etc.)
+//   if (!response.ok) {
+//     const errorData = await response.json();
+//     throw new Error(errorData.message || "Login failed");
+//   }
+
+//   // 3. The Response (This will contain your JWT token)
+//   return await response.json(); 
+// };
