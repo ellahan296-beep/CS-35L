@@ -6,20 +6,25 @@ import { getListings, markAsSold, deleteListing } from '../services/listingServi
 export default function ListingsPage() {
   const navigate = useNavigate();
   const [listings, setListings] = useState([]);
-
+//I learned how to use useEffect and useNavigate from AI.
   useEffect(() => {
-    getListings().then(data => setListings(data));
-  }, []);
+  getListings().then(data => {
+    console.log(data)
+    setListings(data)
+  })
+}, []);
 
   async function handleSold(id) {
-    await markAsSold(id);
-    setListings(listings.map(l => l.id === id ? { ...l, status: 'sold' } : l));
-  }
+  await markAsSold(id);
+  const data = await getListings()
+  setListings(data)
+}
 
   async function handleDelete(id) {
-    await deleteListing(id);
-    setListings(listings.filter(l => l.id !== id));
-  }
+  await deleteListing(id);
+  const data = await getListings()
+  setListings(data)
+}
 
   return (
     <Container maxWidth="md" sx={{ mt: 6 }}>
@@ -38,24 +43,32 @@ export default function ListingsPage() {
       </Box>
 
       <Grid container spacing={3}>
-        {listings.map(listing => (
-          <Grid item xs={12} sm={6} key={listing.id}>
+        {listings.map(listing  => (
+          <Grid item xs={12} key={listing.id}>
             <Card elevation={2} sx={{ borderRadius: 3, opacity: listing.status === 'sold' ? 0.6 : 1 }}>
               <CardContent>
+                {/* add image */}
+                {(() => {
+                  const imgs = JSON.parse(listing.images || '[]')
+                  if (imgs.length > 0) {
+                    return <img 
+                      src={`http://localhost:9999/${imgs[0]}`} 
+                      alt={listing.title}
+                      style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '8px' }}
+                    />
+                  }
+                })()}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
                   <Typography fontWeight="bold" fontSize={16}>{listing.title}</Typography>
                   <Chip
                     label={listing.status === 'sold' ? 'Sold' : 'Active'}
                     size="small"
-                    sx={{
-                      backgroundColor: listing.status === 'sold' ? '#e0e0e0' : '#e3f0ff',
-                      color: listing.status === 'sold' ? '#888' : '#2d68c4',
-                    }}
+                    sx={{ backgroundColor: '#e3f0ff', color: '#2d68c4' }}
                   />
                 </Box>
                 <Typography color="text.secondary" fontSize={13} mb={1}>{listing.description}</Typography>
                 <Typography fontWeight="bold" color="#2d68c4" mb={1}>${listing.price}</Typography>
-                <Typography fontSize={12} color="text.secondary" mb={2}>{listing.category} · {listing.campus}</Typography>
+                <Typography fontSize={12} color="text.secondary" mb={2}>{listing.category}  {listing.campus}</Typography>
 
                 {listing.status === 'active' && (
                   <Box sx={{ display: 'flex', gap: 1 }}>
@@ -77,9 +90,11 @@ export default function ListingsPage() {
                       Delete
                     </Button>
                   </Box>
+
                 )}
               </CardContent>
             </Card>
+
           </Grid>
         ))}
       </Grid>

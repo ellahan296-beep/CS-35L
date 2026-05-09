@@ -5,7 +5,7 @@ export async function getListings() {
   const res = await fetch(`${BASE_URL}/listings`);
   return res.json();
 }
-
+//with a id
 export async function getListing(id) {
   const res = await fetch(`${BASE_URL}/listings/${id}`);
   return res.json();
@@ -32,4 +32,14 @@ export async function deleteListing(id) {
     method: 'DELETE',
   });
   return res.json();
+}
+export async function uploadImage(listingId, imageFile) {
+  const formData = new FormData()
+  formData.append('image', imageFile)
+  console.log('uploading image for listing:', listingId)
+  const res = await fetch(`${BASE_URL}/listings/${listingId}/images`, {
+    method: 'POST',
+    body: formData
+  })
+  return res.json()
 }
