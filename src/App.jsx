@@ -2,9 +2,10 @@ import './App.css'
 import { useState } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LogIn, SignUp } from './frontend/Login_Signup.jsx'
-import Dashboard from './dashboard.jsx'
+import Dashboard from './frontend/dashboard.jsx'
 import CreateListing from './frontend/CreateListing.jsx'
 import ListingsPage from './frontend/ListingsPage.jsx'
+import Profile from './frontend/Profile.jsx'
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path='/login' element={<LogIn />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/profile' element = {<Profile />} />
           <Route path='/listings' element={<ListingsPage />} />
           <Route path='/listings/new' element={<CreateListing />} />
         </Routes>

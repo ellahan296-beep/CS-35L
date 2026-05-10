@@ -6,6 +6,11 @@ export async function getListings() {
   return res.json();
 }
 
+export async function getActiveListings() {
+  const res = await fetch(`${BASE_URL}/listings/find/active`);
+  return res.json();
+}
+
 export async function getListing(id) {
   const res = await fetch(`${BASE_URL}/listings/${id}`);
   return res.json();

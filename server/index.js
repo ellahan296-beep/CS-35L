@@ -14,6 +14,13 @@ app.get('/api/listings', (req, res) => {
   res.json(listings);
 });
 
+// GET only unsold listings 
+app.get('/api/listings/find/active', (req, res) => {
+  const listings = db.prepare("SELECT * FROM listings WHERE status = 'active'").all();
+  if (!listings) return res.status(404).json({ error: 'Listings not found' });
+  res.json(listings);
+});
+
 // GET single listing
 app.get('/api/listings/:id', (req, res) => {
   const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(req.params.id);
