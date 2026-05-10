@@ -1,4 +1,5 @@
 
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material';
@@ -66,7 +67,7 @@ export function NavigationBar()
                 <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/profile')}>
                     My Profile 
                 </Button>
-                <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/search')}>
+                <Button sx={{fontSize: '1.3rem'}} size="large">
                     Search
                 </Button>
             </div>
@@ -76,25 +77,21 @@ export function NavigationBar()
     );
 }
 
-export default function Dashboard()
+export default function Search()
 {
     return(
         <>
-        <div>
-        <NavigationBar />
-        {/* <Typography 
+        <Typography justifyContent = "center"
         sx={{
           fontFamily: "'Monoton', sans-serif",
           fontWeight: 700,
           letterSpacing: '-1px',
-          mt: 5
+          mt: 10
           }} 
-            variant="h4" component="h2" fontWeight="bold">
+        variant="h2" fontWeight="bold">
           <span style={{ color: '#2d68c4' }}>Campus</span>
           <span style={{ color: '#f2a900' }}>Trade</span>
-        </Typography> */}
-        </div>
-        <Listings />
+        </Typography>
         </>
     );
 }
