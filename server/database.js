@@ -15,7 +15,32 @@ db.exec(`
     seller_id   INTEGER NOT NULL,
     status      TEXT    DEFAULT 'active',
     created_at  TEXT    DEFAULT (datetime('now'))
-  )
+  );
+
+  CREATE VIRTUAL TABLE IF NOT EXISTS listings_fts 
+  USING FTS5(title, description, content = 'listings', content_rowid = 'id', tokenize = 'trigram');
+
+  INSERT INTO listings_fts (rowid, title, description)
+  SELECT id, 
+  title, 
+  description
+  FROM listings;
+
+  CREATE TRIGGER IF NOT EXISTS listings_insert AFTER 
+  INSERT ON listings BEGIN
+  INSERT INTO listings_fts(rowid, title, description)
+  VALUES (new.id, new.title, new.description); END;
+
+  CREATE TRIGGER IF NOT EXISTS listings_update AFTER 
+  UPDATE ON listings BEGIN
+  INSERT INTO listings_fts(rowid, title, description)
+  VALUES (new.id, new.title, new.description); END;
+
+  CREATE TRIGGER IF NOT EXISTS listings_delete AFTER 
+  DELETE ON listings BEGIN
+  DELETE FROM listings_fts
+  WHERE rowid = old.id; END;
+  
 `);
 
 console.log('Database check');
