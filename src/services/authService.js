@@ -5,7 +5,7 @@
  * @param {string} email 
  * @param {string} password 
  */
-export const login = (email, password) => {
+/*export const login = (email, password) => {
   return new Promise((resolve, reject) => {
     console.log("Service: Attempting to connect to API...");
 
@@ -46,7 +46,7 @@ export const signup = (username, email, password) =>
   });
 };
 
-
+*/
 // src/services/authService.js
 
 // example of non-mock authservice.js
@@ -72,3 +72,45 @@ export const signup = (username, email, password) =>
 //   // 3. The Response (This will contain your JWT token)
 //   return await response.json(); 
 // };
+
+const API_URL = "http://localhost:9999/api";
+
+export const login = async (email, password) => {
+  const response = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(data.message || "Login failed");
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+};
+
+export const signup = async (username, email, password) => {
+  const response = await fetch(`${API_URL}/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, email, password }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(data.message || "Signup failed");
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+};
