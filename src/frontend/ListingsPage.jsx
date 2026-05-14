@@ -27,9 +27,15 @@ export default function ListingsPage() {
 }
 
   return (
-    <Container maxWidth="md" sx={{ mt: 6 }}>
+    <Container maxWidth="md" sx={{ mt: 6, mb: 6}}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography variant="h5" fontWeight="bold">
+        <Typography 
+        sx={{
+          fontFamily: "'Monoton', sans-serif",
+          fontWeight: 700,
+          letterSpacing: '-1px',
+          }} 
+        variant="h3" fontWeight="bold">
           <span style={{ color: '#2d68c4' }}>Campus</span>
           <span style={{ color: '#f2a900' }}>Trade</span>
         </Typography>
@@ -43,11 +49,16 @@ export default function ListingsPage() {
       </Box>
 
       <Grid container spacing={3}>
-        {listings.map(listing  => (
-          <Grid item xs={12} key={listing.id}>
-            <Card 
-                elevation={2} 
-                sx={{ borderRadius: 3, opacity: listing.status === 'sold' ? 0.6 : 1 }}
+        {listings.map(listing => (
+          <Grid item xs={12} sm={6} key={listing.id}>
+            <Card elevation={2} 
+            sx={{
+              height: '100%', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              paddingTop: 5, paddingBottom: 5, paddingLeft: 2, paddingRight: 2, 
+              opacity: listing.status === 'sold' ? 0.6 : 1 }}>
+        
                 onClick={() => navigate('/listings/' + listing.id)}
               >
               <CardContent>
@@ -63,7 +74,7 @@ export default function ListingsPage() {
                   }
                 })()}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                  <Typography fontWeight="bold" fontSize={16}>{listing.title}</Typography>
+                  <Typography variant="h5" fontWeight="bold" >{listing.title}</Typography>
                   <Chip
                     label={listing.status === 'sold' ? 'Sold' : 'Active'}
                     size="small"
@@ -75,7 +86,7 @@ export default function ListingsPage() {
                 <Typography fontSize={12} color="text.secondary" mb={2}>{listing.category}  {listing.campus}</Typography>
 
                 {listing.status === 'active' && (
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2}}>
                     <Button
                       size="small"
                       variant="outlined"

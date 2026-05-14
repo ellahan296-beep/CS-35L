@@ -5,11 +5,18 @@ export async function getListings() {
   const res = await fetch(`${BASE_URL}/listings`);
   return res.json();
 }
-//with a id
+// get one listing with id
 export async function getListing(id) {
   const res = await fetch(`${BASE_URL}/listings/${id}`);
   return res.json();
 }
+//active listings for homepage
+export async function getActiveListings() {
+  const res = await fetch(`${BASE_URL}/listings/find/active`);
+  return res.json();
+}
+
+
 
 export async function createListing(data) {
   const res = await fetch(`${BASE_URL}/listings`, {
