@@ -51,17 +51,18 @@ export default function ListingsPage() {
       <Grid container spacing={3}>
         {listings.map(listing => (
           <Grid item xs={12} sm={6} key={listing.id}>
-            <Card elevation={2} 
-            sx={{
-              height: '100%', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              paddingTop: 5, paddingBottom: 5, paddingLeft: 2, paddingRight: 2, 
-              opacity: listing.status === 'sold' ? 0.6 : 1 }}>
-        
-                onClick={() => navigate('/listings/' + listing.id)}
-              >
-              <CardContent>
+            <Card 
+              elevation={2}
+              onClick={() => navigate('/listings/' + listing.id)}
+              sx={{
+                height: '100%', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                paddingTop: 5, paddingBottom: 5, paddingLeft: 2, paddingRight: 2, 
+                opacity: listing.status === 'sold' ? 0.6 : 1
+              }}
+            >
+        <CardContent>
                 {/* add image */}
                 {(() => {
                   const imgs = JSON.parse(listing.images || '[]')
