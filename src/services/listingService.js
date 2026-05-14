@@ -7,7 +7,20 @@ export async function getListings() {
 }
 
 export async function getActiveListings() {
-  const res = await fetch(`${BASE_URL}/listings/find/active`);
+  const res = await fetch(`${BASE_URL}/active-listings`);
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Something went wrong');
+  }
+  return res.json();
+}
+
+export async function searchListings(query) {
+  const res = await fetch(`${BASE_URL}/search/?term=${query}`);
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Something went wrong');
+  }
   return res.json();
 }
 

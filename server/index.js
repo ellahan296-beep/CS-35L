@@ -18,8 +18,21 @@ app.get('/api/listings', (req, res) => {
 });
 
 // GET only unsold listings 
-app.get('/api/listings/find/active', (req, res) => {
+app.get('/api/active-listings', (req, res) => {
   const listings = db.prepare("SELECT * FROM listings WHERE status = 'active'").all();
+  if (!listings) return res.status(404).json({ error: 'Listings not found' });
+  res.json(listings);
+});
+
+// GET listings matching a certain 
+app.get('/api/search', (req, res) => {
+  const searchTerm = req.query.term;
+  const query = `
+    SELECT * FROM listings
+    JOIN listings_fts AS f ON listings.id = f.rowid
+    WHERE (f.listings_fts MATCH ?) AND (listings.status = 'active')`;
+  const searchValue = `${searchTerm}`;
+  const listings = db.prepare(query).all(searchValue);
   if (!listings) return res.status(404).json({ error: 'Listings not found' });
   res.json(listings);
 });

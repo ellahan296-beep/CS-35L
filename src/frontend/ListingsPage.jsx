@@ -2,58 +2,30 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material';
 import { getListings, markAsSold, deleteListing } from '../services/listingService';
+import { LoadingCircle, NavigationBar } from './Search.jsx'; 
 
-export default function ListingsPage() {
-  const navigate = useNavigate();
-  const [listings, setListings] = useState([]);
 
-  useEffect(() => {
-    getListings().then(data => setListings(data));
-  }, []);
-
-  async function handleSold(id) {
-    await markAsSold(id);
-    setListings(listings.map(l => l.id === id ? { ...l, status: 'sold' } : l));
+function Listings({items}) {
+  if (items.length === 0) {
+    return (
+      <div  style = {{ height: '50vh', display: 'flex', alignItems: "center", justifyContent: "center" }}>
+          <h2 style={{ color: "gray" }}>No listings available!</h2>
+      </div>
+      );
   }
-
-  async function handleDelete(id) {
-    await deleteListing(id);
-    setListings(listings.filter(l => l.id !== id));
-  }
-
-  return (
-    <Container maxWidth="md" sx={{ mt: 6, mb: 6}}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography 
-        sx={{
-          fontFamily: "'Monoton', sans-serif",
-          fontWeight: 700,
-          letterSpacing: '-1px',
-          }} 
-        variant="h3" fontWeight="bold">
-          <span style={{ color: '#2d68c4' }}>Campus</span>
-          <span style={{ color: '#f2a900' }}>Trade</span>
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={() => navigate('/listings/new')}
-          sx={{ backgroundColor: '#2d68c4', borderRadius: 2 }}
-        >
-          + Post Item
-        </Button>
-      </Box>
-
+    return (
       <Grid container spacing={3}>
-        {listings.map(listing => (
-          <Grid item xs={12} sm={6} key={listing.id}>
+        {items.map(listing => (
+          <Grid item size = {{xs: 12, sm: 6, md: 4}} key={listing.id}>
             <Card elevation={2} 
             sx={{
               height: '100%', 
+              width: '100%',
               display: 'flex', 
               flexDirection: 'column', 
               paddingTop: 5, paddingBottom: 5, paddingLeft: 2, paddingRight: 2, 
               opacity: listing.status === 'sold' ? 0.6 : 1 }}>
-              <CardContent>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
                   <Typography variant="h5" fontWeight="bold" >{listing.title}</Typography>
                   <Chip
@@ -95,6 +67,55 @@ export default function ListingsPage() {
           </Grid>
         ))}
       </Grid>
+    );
+}
+
+export default function ListingsPage() {
+  const navigate = useNavigate();
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getListings().then(data => setListings(data))
+    .finally(() => setLoading(false));
+  }, []);
+
+  async function handleSold(id) {
+    await markAsSold(id);
+    setListings(listings.map(l => l.id === id ? { ...l, status: 'sold' } : l));
+  }
+
+  async function handleDelete(id) {
+    await deleteListing(id);
+    setListings(listings.filter(l => l.id !== id));
+  }
+
+  return (
+    <>
+    <NavigationBar />
+    <Container maxWidth="md" sx={{ mt: 6, mb: 6}}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Typography 
+        sx={{
+          fontFamily: "'Monoton', sans-serif",
+          fontWeight: 700,
+          letterSpacing: '-1px',
+          }} 
+        variant="h3" fontWeight="bold">
+          <span style={{ color: '#2d68c4' }}>Campus</span>
+          <span style={{ color: '#f2a900' }}>Trade</span>
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={() => navigate('/listings/new')}
+          sx={{ backgroundColor: '#2d68c4', borderRadius: 2 }}
+        >
+          + Post Item
+        </Button>
+      </Box>
+      {loading ? <LoadingCircle /> : <Listings items={listings} />}
     </Container>
+    </>
   );
 }
