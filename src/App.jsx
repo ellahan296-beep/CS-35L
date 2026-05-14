@@ -6,6 +6,7 @@ import Dashboard from './frontend/dashboard.jsx'
 import CreateListing from './frontend/CreateListing.jsx'
 import ListingsPage from './frontend/ListingsPage.jsx'
 import Profile from './frontend/Profile.jsx'
+import Search from './frontend/Search.jsx'
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ListingDetail from './frontend/ListingDetail.jsx'
@@ -34,7 +35,11 @@ function App() {
           <Route path='/profile' element = {<Profile />} />
           <Route path='/listings' element={<ListingsPage />} />
           <Route path='/listings/new' element={<CreateListing />} />
+
           <Route path='/listings/:id' element={<ListingDetail />} />
+
+          <Route path='/search' element={<Search />} />
+
         </Routes>
       </Router>
     </ThemeProvider>
