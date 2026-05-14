@@ -7,6 +7,7 @@ import CreateListing from './frontend/CreateListing.jsx'
 import ListingsPage from './frontend/ListingsPage.jsx'
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ListingDetail from './frontend/ListingDetail.jsx'
 
 const theme = createTheme({
   palette: {
@@ -31,6 +32,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/listings' element={<ListingsPage />} />
           <Route path='/listings/new' element={<CreateListing />} />
+          <Route path='/listings/:id' element={<ListingDetail />} />
         </Routes>
       </Router>
     </ThemeProvider>

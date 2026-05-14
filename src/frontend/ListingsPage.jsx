@@ -45,7 +45,11 @@ export default function ListingsPage() {
       <Grid container spacing={3}>
         {listings.map(listing  => (
           <Grid item xs={12} key={listing.id}>
-            <Card elevation={2} sx={{ borderRadius: 3, opacity: listing.status === 'sold' ? 0.6 : 1 }}>
+            <Card 
+                elevation={2} 
+                sx={{ borderRadius: 3, opacity: listing.status === 'sold' ? 0.6 : 1 }}
+                onClick={() => navigate('/listings/' + listing.id)}
+              >
               <CardContent>
                 {/* add image */}
                 {(() => {
@@ -75,7 +79,12 @@ export default function ListingsPage() {
                     <Button
                       size="small"
                       variant="outlined"
-                      onClick={() => handleSold(listing.id)}
+                      
+                      onClick={(e) => 
+                        {
+                          e.stopPropagation()// prevent card click
+                          handleSold(listing.id)}}
+                      
                       sx={{ borderColor: '#f2a900', color: '#f2a900', borderRadius: 2 }}
                     >
                       Mark as Sold
@@ -84,7 +93,10 @@ export default function ListingsPage() {
                       size="small"
                       variant="outlined"
                       color="error"
-                      onClick={() => handleDelete(listing.id)}
+                      onClick={(e) => 
+                        {
+                          e.stopPropagation()// prevent card click 
+                          handleDelete(listing.id)}}
                       sx={{ borderRadius: 2 }}
                     >
                       Delete
