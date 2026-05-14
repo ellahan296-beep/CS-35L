@@ -9,6 +9,7 @@ import Profile from './frontend/Profile.jsx'
 import Search from './frontend/Search.jsx'
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ListingDetail from './frontend/ListingDetail.jsx'
 
 const theme = createTheme({
   palette: {
@@ -34,7 +35,11 @@ function App() {
           <Route path='/profile' element = {<Profile />} />
           <Route path='/listings' element={<ListingsPage />} />
           <Route path='/listings/new' element={<CreateListing />} />
+
+          <Route path='/listings/:id' element={<ListingDetail />} />
+
           <Route path='/search' element={<Search />} />
+
         </Routes>
       </Router>
     </ThemeProvider>

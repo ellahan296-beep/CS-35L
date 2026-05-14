@@ -5,7 +5,12 @@ export async function getListings() {
   const res = await fetch(`${BASE_URL}/listings`);
   return res.json();
 }
-
+// get one listing with id
+export async function getListing(id) {
+  const res = await fetch(`${BASE_URL}/listings/${id}`);
+  return res.json();
+}
+//active listings for homepage
 export async function getActiveListings() {
   const res = await fetch(`${BASE_URL}/active-listings`);
   if (!res.ok) {
@@ -24,10 +29,7 @@ export async function searchListings(query) {
   return res.json();
 }
 
-export async function getListing(id) {
-  const res = await fetch(`${BASE_URL}/listings/${id}`);
-  return res.json();
-}
+
 
 export async function createListing(data) {
   const res = await fetch(`${BASE_URL}/listings`, {
@@ -50,4 +52,14 @@ export async function deleteListing(id) {
     method: 'DELETE',
   });
   return res.json();
+}
+export async function uploadImage(listingId, imageFile) {
+  const formData = new FormData()
+  formData.append('image', imageFile)
+  console.log('uploading image for listing:', listingId)
+  const res = await fetch(`${BASE_URL}/listings/${listingId}/images`, {
+    method: 'POST',
+    body: formData
+  })
+  return res.json()
 }

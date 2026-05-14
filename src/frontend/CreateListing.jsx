@@ -2,41 +2,73 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Container, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { createListing } from '../services/listingService';
+import { uploadImage } from '../services/listingService';
 
 const CATEGORIES = ['Books', 'Electronics', 'Furniture', 'Clothing', 'Other'];
-const CAMPUSES = ['UCLA', 'USC', 'UCI', 'UCSD', 'UCB'];
+const CAMPUSES = ['UCLA', 'USC', 'UCI', 'UCSD', 'UCB' ];
+
+
 
 export default function CreateListing() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    title: '',
-    description: '',
-    price: '',
-    category: '',
-    campus: '',
-  });
+  
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [campus, setCampus] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const [imageFile, setImageFile] = useState(null);
+  
+  function handleTitleChange(e) {
+    setTitle(e.target.value)
   }
+
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value)
+  }
+
+  function handlePriceChange(e) {
+    setPrice(e.target.value)
+  }
+
+  function handleCategoryChange(e) {
+    setCategory(e.target.value)
+  }
+
+  function handleCampusChange(e) {
+    setCampus(e.target.value)
+  }
+
+  function handleImageChange(e) {
+    setImageFile(e.target.files[0])
+    console.log('image selected:', e.target.files[0])
+  }
+
 
   async function handleSubmit() {
     setError('');
-    if (!form.title || !form.price || !form.category || !form.campus) {
+    if (!title || !price || !category || !campus) {
       setError('Please fill in all required fields');
       return;
     }
     setLoading(true);
     try {
-      await createListing({ ...form, price: Number(form.price), seller_id: 1 });
-      navigate('/listings');
-    } catch (err) {
-      setError('Something went wrong, please try again');
+    const result = await createListing({ title, description, price: Number(price), category, campus, seller_id: 1 });
+    console.log('listing created:', result)
+    if (imageFile) {
+      await uploadImage(result.id, imageFile)
     }
-    setLoading(false);
+    navigate('/listings');
+  } catch (err) {
+     console.log('error:', err)// test point
+    setError('Something went wrong, please try again');
   }
+  setLoading(false);
+  }
+
+  
 
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
@@ -46,37 +78,34 @@ export default function CreateListing() {
           <span style={{ color: '#f2a900' }}> a Listing</span>
         </Typography>
 
+
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
             label="Title *"
-            name="title"
-            value={form.title}
-            onChange={handleChange}
+            value={title}
+            onChange={handleTitleChange}
             fullWidth
           />
           <TextField
             label="Description"
-            name="description"
-            value={form.description}
-            onChange={handleChange}
+            value={description}
+            onChange={handleDescriptionChange}
             fullWidth
             multiline
             rows={3}
           />
           <TextField
             label="Price ($) *"
-            name="price"
-            value={form.price}
-            onChange={handleChange}
+            value={price}
+            onChange={handlePriceChange}
             fullWidth
             type="number"
           />
           <TextField
             select
             label="Category *"
-            name="category"
-            value={form.category}
-            onChange={handleChange}
+            value={category}
+            onChange={handleCategoryChange}
             fullWidth
           >
             {CATEGORIES.map(c => (
@@ -86,15 +115,17 @@ export default function CreateListing() {
           <TextField
             select
             label="Campus *"
-            name="campus"
-            value={form.campus}
-            onChange={handleChange}
+            value={campus}
+            onChange={handleCampusChange}
             fullWidth
           >
             {CAMPUSES.map(c => (
               <MenuItem key={c} value={c}>{c}</MenuItem>
             ))}
           </TextField>
+
+          <Typography fontSize={14} color="text.secondary">Upload Image</Typography>
+          <input type="file" accept="image/*" onChange={handleImageChange} />
 
           {error && (
             <Typography color="error" fontSize={14}>{error}</Typography>
