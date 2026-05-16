@@ -31,6 +31,22 @@ app.use(express.json());
 //use static because images are static files
 app.use('/uploads', express.static('uploads'))
 
+//Checks if user is logged in before accessing route. 
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Missing token' });
+  }
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+}
+
 // GET all listings
 app.get('/api/listings', (req, res) => {
   const listings = db.prepare('SELECT * FROM listings').all();
@@ -64,14 +80,15 @@ app.get('/api/listings/:id', (req, res) => {
   res.json(listing);
 });
 // Create new listing
-app.post('/api/listings', (req, res) => {
-  const { title, description, price, category, campus, seller_id } = req.body;
-  console.log('creating listing:', title)
+app.post('/api/listings', authenticateToken, (req, res) => {
+  const { title, description, price, category, campus} = req.body;
+  const seller_id = req.user.id;
+  console.log('creating listing:', title, 'seller:', seller_id);
   const result = db.prepare(`
     INSERT INTO listings (title, description, price, category, campus, seller_id)
     VALUES (?, ?, ?, ?, ?, ?)
   `).run(title, description, price, category, campus, seller_id);
-  res.json({ id: result.lastInsertRowid });
+  res.json({ id: result.lastInsertRowid, seller_id });
 });
 //when I use ai to debug, it recommend me use patch instead of post to mark as sold
 // mark as sold

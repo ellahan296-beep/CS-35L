@@ -32,9 +32,10 @@ export async function searchListings(query) {
 
 
 export async function createListing(data) {
+  const token = localStorage.getItem('token');
   const res = await fetch(`${BASE_URL}/listings`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
     body: JSON.stringify(data),
   });
   return res.json();
