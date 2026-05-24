@@ -81,9 +81,16 @@ app.get('/api/listings/:id', (req, res) => {
   res.json(listing);
 });
 
-// GET all listings by a specific seller
+// GET active listings by a specific seller
 app.get('/api/listings/seller/:id', (req, res) => {
-  const listing = db.prepare('SELECT * FROM listings WHERE seller_id = ?').all(req.params.id);
+  const listing = db.prepare("SELECT * FROM listings WHERE seller_id = ? AND status = 'active'").all(req.params.id);
+  if (!listing) return res.status(404).json({ error: 'Listing not found' });
+  res.json(listing); 
+})
+
+// GET all listings by a specific user
+app.get('/api/listings/user/:id', (req, res) => {
+  const listing = db.prepare("SELECT * FROM listings WHERE seller_id = ?").all(req.params.id);
   if (!listing) return res.status(404).json({ error: 'Listing not found' });
   res.json(listing); 
 })

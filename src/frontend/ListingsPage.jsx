@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material';
-import { getListings, markAsSold, deleteListing } from '../services/listingService';
+import { getListings, markAsSold, deleteListing, getUserListings } from '../services/listingService';
+import { getCurrUser } from '../services/profileService.js';
 import { LoadingCircle, NavigationBar } from './Search.jsx'; 
 
 function Listings({items}) {
@@ -43,6 +44,12 @@ function Listings({items}) {
                     style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '8px' }}
                   />
                 }
+                else 
+                  return (<Box 
+                    style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '13px',
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #cecece' }}>
+                      <Typography sx={{color:'#8d8d8d'}}>No Image</Typography>
+                    </Box>);
               })()}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
                 <Typography variant="h5" fontWeight="bold">{listing.title}</Typography>
@@ -94,15 +101,37 @@ function Listings({items}) {
 export default function ListingsPage() {
   const navigate = useNavigate();
   const [listings, setListings] = useState([]);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     setLoading(true);
-    getListings().then(data => {
+    setError('');
+
+    getCurrUser()
+    .then(data => {
+        setUser(data);
+    })
+    .catch(err => {
+        setError(err.message);
+        console.error(err.message);
+        })
+  }, []);
+
+  useEffect(() => {
+    if (!user)
+      return;
+
+    setLoading(true);
+
+    getUserListings(user.id)
+    .then(data => {
       console.log(data)
       setListings(data)
-    }).finally(() => setLoading(false));
-  }, []);
+    })
+    .finally(() => setLoading(false));
+  }, [user]);
 
   async function handleSold(id) {
     await markAsSold(id);
@@ -119,7 +148,7 @@ export default function ListingsPage() {
   return (
     <>
       <NavigationBar />
-      <Container maxWidth="md" sx={{ mt: 6, mb: 6}}>
+      <Container maxWidth="md" sx={{ mt: 2, mb: 6}}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
           <Typography 
             sx={{

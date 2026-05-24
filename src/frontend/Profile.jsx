@@ -3,7 +3,7 @@ import { NavigationBar } from './dashboard.jsx';
 import { Listings, LoadingCircle } from './Search.jsx'
 import { useEffect, useState } from 'react';
 import { getCurrUser } from '../services/profileService.js'
-import { getUserListings } from '../services/listingService.js'
+import { getSellerListings } from '../services/listingService.js'
 import { Box, Typography, Paper, Container, Avatar, Divider } from '@mui/material';
  
 // the section outlined in the comments is AI generated because I was unsure how to
@@ -23,7 +23,7 @@ function UserInfo( {user} )
     setLoading(true);
     setError('');
 
-    getUserListings(user.id)
+    getSellerListings(user.id)
     .then(data => {
         setListings(data);
     })

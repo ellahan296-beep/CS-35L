@@ -26,6 +26,9 @@ export function NavigationBar()
         </Typography>
       </div>
       <div>
+        <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/dashboard')}>
+            Dashboard
+        </Button>
         <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/listings')}>
             Listings
         </Button>
