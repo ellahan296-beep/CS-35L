@@ -55,7 +55,7 @@ export default function CreateListing() {
     }
     setLoading(true);
     try {
-    const result = await createListing({ title, description, price: Number(price), category, campus, seller_id: 1 });
+    const result = await createListing({ title, description, price: Number(price), category, campus});
     console.log('listing created:', result)
     if (imageFile) {
       await uploadImage(result.id, imageFile)
