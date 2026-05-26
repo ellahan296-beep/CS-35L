@@ -13,6 +13,7 @@ const app = express();
 const PORT = 9999;
 const JWT_SECRET = 'campustrade_secret_9283749';
 
+
 // i looked up how to use multer on npm docs
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -79,6 +80,21 @@ app.get('/api/listings/:id', (req, res) => {
   if (!listing) return res.status(404).json({ error: 'Listing not found' });
   res.json(listing);
 });
+
+// GET active listings by a specific seller
+app.get('/api/listings/seller/:id', (req, res) => {
+  const listing = db.prepare("SELECT * FROM listings WHERE seller_id = ? AND status = 'active'").all(req.params.id);
+  if (!listing) return res.status(404).json({ error: 'Listing not found' });
+  res.json(listing); 
+})
+
+// GET all listings by a specific user
+app.get('/api/listings/user/:id', (req, res) => {
+  const listing = db.prepare("SELECT * FROM listings WHERE seller_id = ?").all(req.params.id);
+  if (!listing) return res.status(404).json({ error: 'Listing not found' });
+  res.json(listing); 
+})
+
 // Create new listing
 app.post('/api/listings', authenticateToken, (req, res) => {
   const { title, description, price, category, campus} = req.body;
@@ -90,6 +106,7 @@ app.post('/api/listings', authenticateToken, (req, res) => {
   `).run(title, description, price, category, campus, seller_id);
   res.json({ id: result.lastInsertRowid, seller_id });
 });
+
 //when I use ai to debug, it recommend me use patch instead of post to mark as sold
 // mark as sold
 app.patch('/api/listings/:id/sold', (req, res) => {
@@ -206,6 +223,21 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// PROFILE INFORMATION
+
+// get curr user
+app.get('/api/profile', authenticateToken, async (req, res) => {
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json(user);
+});
+
+// get specific user 
+app.get('/api/profile/:id', async (req, res) => {
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json(user);
+});
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

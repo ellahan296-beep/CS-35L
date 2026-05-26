@@ -20,15 +20,32 @@ export function Listings({ items })
   <Container>
     <Grid container spacing={3} sx={{mt: 5}}>
       {items.map(listing => (
-        <Grid item size = {{xs: 12, sm: 6, md: 4}} key={listing.id}>
+        <Grid item size = {{xs: 12, sm: 6, md: 3}} key={listing.id}>
           <Card elevation = '2' 
           sx={{ 
               height: '100%', 
               display: 'flex', 
               flexDirection: 'column', 
-              borderRadius: 0, paddingTop: 5, paddingBottom: 5, paddingLeft: 2, paddingRight: 2
+              borderRadius: 0, paddingTop: 3, paddingBottom: 3, paddingLeft: 2, paddingRight: 2
               }}>
-            <CardContent>
+            <CardContent sx={{ flexGrow: 1 }}>
+              {/* show image if there is one */}
+              {(() => {
+                const imgs = JSON.parse(listing.images || '[]')
+                if (imgs.length > 0) {
+                  return <img 
+                    src={`http://localhost:9999/${imgs[0]}`} 
+                    alt={listing.title}
+                    style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '8px' }}
+                  />
+                }
+                else 
+                  return (<Box 
+                    style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '15px',
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #cecece' }}>
+                      <Typography sx={{color:'#8d8d8d'}}>No Image</Typography>
+                    </Box>);
+              })()}
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
                 <Typography variant="h5" fontWeight="bold" >{listing.title}</Typography>
               </Box>
@@ -62,7 +79,7 @@ export function SearchBar({ onSearch })
         fontFamily: "'Monoton', sans-serif",
         fontWeight: 700,
         letterSpacing: '-1px',
-        mt: 10
+        mt: 5
         }} 
       variant="h2" fontWeight="bold">
         <span style={{ color: '#2d68c4' }}>Campus</span>
@@ -102,6 +119,9 @@ export function NavigationBar()
     <>
     <Box sx={{display: 'flex', justifyContent: 'right', alignItems: 'right', mt: 2}}>
       <div>
+        <Button sx={{fontSize: '1.1rem'}} size="large" onClick={() => navigate('/dashboard')}>
+            Dashboard
+        </Button>
         <Button sx={{fontSize: '1.1rem'}} size="large" onClick={() => navigate('/listings')}>
             Listings
         </Button>
@@ -171,7 +191,7 @@ export default function Search()
         display: "flex", 
         alignItems: "center", 
         justifyContent: "center", 
-        flexDirection: "column"}}
+        flexDirection: "column", marginBottom: '50px'}}
       >
         <SearchBar onSearch = {(e) => setSearchQuery(e)} />
         {loading ? <LoadingCircle /> : <Listings items = {listings} />}

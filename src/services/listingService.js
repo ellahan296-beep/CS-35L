@@ -19,6 +19,24 @@ export async function getActiveListings() {
   }
   return res.json();
 }
+// active listings from specific user 
+export async function getSellerListings(seller_id) {
+  const res = await fetch(`${BASE_URL}/listings/seller/${seller_id}`);
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Something went wrong');
+  }
+  return res.json();
+}
+
+export async function getUserListings(seller_id) {
+  const res = await fetch(`${BASE_URL}/listings/user/${seller_id}`);
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Something went wrong');
+  }
+  return res.json();
+}
 
 export async function searchListings(query) {
   const res = await fetch(`${BASE_URL}/search/?term=${query}`);
@@ -28,8 +46,6 @@ export async function searchListings(query) {
   }
   return res.json();
 }
-
-
 
 export async function createListing(data) {
   const token = localStorage.getItem('token');
