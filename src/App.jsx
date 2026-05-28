@@ -10,6 +10,7 @@ import Search from './frontend/Search.jsx'
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ListingDetail from './frontend/ListingDetail.jsx'
+import ProtectedRoute from './frontend/ProtectedRoute.jsx';
 
 const theme = createTheme({
   palette: {
@@ -31,14 +32,14 @@ function App() {
           <Route path='/' element={<Navigate to="/login" />} />
           <Route path='/login' element={<LogIn />} />
           <Route path='/signup' element={<SignUp />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/profile' element = {<Profile />} />
-          <Route path='/listings' element={<ListingsPage />} />
-          <Route path='/listings/new' element={<CreateListing />} />
+          <Route path='/dashboard' element={<ProtectedRoute> <Dashboard /></ProtectedRoute>} />
+          <Route path='/profile' element = {<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path='/listings' element={<ProtectedRoute><ListingsPage /></ProtectedRoute>} />
+          <Route path='/listings/new' element={<ProtectedRoute><CreateListing /></ProtectedRoute>} />
 
-          <Route path='/listings/:id' element={<ListingDetail />} />
+          <Route path='/listings/:id' element={<ProtectedRoute><ListingDetail /></ProtectedRoute>} />
 
-          <Route path='/search' element={<Search />} />
+          <Route path='/search' element={<ProtectedRoute><Search /></ProtectedRoute>} />
 
         </Routes>
       </Router>

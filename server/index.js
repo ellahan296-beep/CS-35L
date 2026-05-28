@@ -49,20 +49,20 @@ function authenticateToken(req, res, next) {
 }
 
 // GET all listings
-app.get('/api/listings', (req, res) => {
+app.get('/api/listings', authenticateToken, (req, res) => {
   const listings = db.prepare('SELECT * FROM listings').all();
   res.json(listings);
 });
 
 // GET only unsold listings 
-app.get('/api/active-listings', (req, res) => {
+app.get('/api/active-listings', authenticateToken, (req, res) => {
   const listings = db.prepare("SELECT * FROM listings WHERE status = 'active'").all();
   if (!listings) return res.status(404).json({ error: 'Listings not found' });
   res.json(listings);
 });
 
 // GET listings matching a certain 
-app.get('/api/search', (req, res) => {
+app.get('/api/search', authenticateToken, (req, res) => {
   const searchTerm = req.query.term;
   const query = `
     SELECT * FROM listings
@@ -75,21 +75,21 @@ app.get('/api/search', (req, res) => {
 });
 
 // GET single listing
-app.get('/api/listings/:id', (req, res) => {
+app.get('/api/listings/:id', authenticateToken, (req, res) => {
   const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(req.params.id);
   if (!listing) return res.status(404).json({ error: 'Listing not found' });
   res.json(listing);
 });
 
 // GET active listings by a specific seller
-app.get('/api/listings/seller/:id', (req, res) => {
+app.get('/api/listings/seller/:id', authenticateToken, (req, res) => {
   const listing = db.prepare("SELECT * FROM listings WHERE seller_id = ? AND status = 'active'").all(req.params.id);
   if (!listing) return res.status(404).json({ error: 'Listing not found' });
   res.json(listing); 
 })
 
 // GET all listings by a specific user
-app.get('/api/listings/user/:id', (req, res) => {
+app.get('/api/listings/user/:id', authenticateToken, (req, res) => {
   const listing = db.prepare("SELECT * FROM listings WHERE seller_id = ?").all(req.params.id);
   if (!listing) return res.status(404).json({ error: 'Listing not found' });
   res.json(listing); 
@@ -109,17 +109,28 @@ app.post('/api/listings', authenticateToken, (req, res) => {
 
 //when I use ai to debug, it recommend me use patch instead of post to mark as sold
 // mark as sold
-app.patch('/api/listings/:id/sold', (req, res) => {
-  db.prepare('UPDATE listings SET status = ? WHERE id = ?').run('sold', req.params.id);
+app.patch('/api/listings/:id/sold', authenticateToken, (req, res) => {
+  const result = db.prepare(
+    'UPDATE listings SET status = ? WHERE id = ? AND seller_id = ?'
+  ).run('sold', req.params.id, req.user.id);
+  if (result.changes === 0) {
+    return res.status(403).json({ error: 'You can only mark your own listings as sold' });
+  }
+
   res.json({ success: true });
 });
 
 // delete listing
-app.delete('/api/listings/:id', (req, res) => {
-  db.prepare('DELETE FROM listings WHERE id = ?').run(req.params.id);
+app.delete('/api/listings/:id', authenticateToken, (req, res) => {
+  const result = db.prepare(
+    'DELETE FROM listings WHERE id = ? AND seller_id = ?'
+  ).run(req.params.id, req.user.id);
+  if (result.changes === 0) {
+    return res.status(403).json({ error: 'You can only delete your own listings' });
+  }
+
   res.json({ success: true });
 });
-
 
 //POST signup
 app.post('/api/signup', async (req, res) => {
@@ -244,12 +255,18 @@ app.listen(PORT, () => {
 });
 
 // upload image for a listing
-app.post('/api/listings/:id/images', upload.single('image'), (req, res) => {
+app.post('/api/listings/:id/images', authenticateToken, upload.single('image'), (req, res) => {
   const imagePath = req.file.path
 
   console.log('uploaded image:', imagePath)
 
   const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(req.params.id)
+  if (!listing){
+    return res.status(404).json({ error: 'Listing not found' });
+  }
+  if (listing.seller_id !== req.user.id) {
+    return res.status(403).json({ error: 'You can only upload images to your own lisitngs'})
+  }
   const images = JSON.parse(listing.images || '[]')
   images.push(imagePath)
 
