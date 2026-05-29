@@ -9,6 +9,8 @@ import '../index.css'
 
 export function Listings({ items })
 {
+  /* I add this because I want to navigate to the listing detail page when clicking on a listing card */
+  const navigate = useNavigate()
   if (items.length === 0) {
     return (
     <div  style = {{ height: '50vh', display: 'flex', alignItems: "center", justifyContent: "center" }}>
@@ -22,6 +24,8 @@ export function Listings({ items })
       {items.map(listing => (
         <Grid item size = {{xs: 12, sm: 6, md: 3}} key={listing.id}>
           <Card elevation = '2' 
+          /* for listing detail page navigation */
+          onClick={() => navigate('/listings/' + listing.id)}
           sx={{ 
               height: '100%', 
               display: 'flex', 
