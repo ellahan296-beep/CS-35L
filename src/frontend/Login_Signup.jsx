@@ -20,13 +20,6 @@ export const LogIn = () =>
         setLoading(true);
         setError('');
 
-        if (!email || !password)
-        {
-            console.error("Please enter credentials.")
-            setLoading(false);
-            return;
-        }
-
         try
         {
             const data = await login(email, password);
@@ -142,13 +135,6 @@ export const SignUp = () =>
         e.preventDefault();
         setLoading(true);
         setError('');
-
-        if (!email || !password)
-        {
-            console.error("Please enter credentials.")
-            setLoading(false);
-            return;
-        }
 
         try
         {
