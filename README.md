@@ -57,8 +57,7 @@ npm install
 cd ..
 4. Start the backend
 Open a terminal and run:
-cd server
-node index.js
+npm run backend
 You should see: Server running at http://localhost:9999
 5. Start the frontend
 Open a new terminal tab and run:
