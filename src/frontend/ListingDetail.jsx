@@ -7,12 +7,20 @@ export default function ListingDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [listing, setListing] = useState(null)
+  const [seller, setSeller] = useState(null) // state for seller info
 
   // grab the listing when page loads
   useEffect(() => {
     getListing(id).then(data => {
       console.log('listing detail:', data)
       setListing(data)
+      // get seller info
+      fetch('http://localhost:9999/api/profile/' + data.seller_id)
+        .then(res => res.json())
+        .then(user => {
+          console.log('seller:', user)
+          setSeller(user)
+        })
     })
   }, [])
 
@@ -55,6 +63,20 @@ export default function ListingDetail() {
         <Typography color="text.secondary" mb={2}>{listing.description}</Typography>
 
         <Typography fontSize={13} color="text.secondary">{listing.category} · {listing.campus}</Typography>
+        {seller && (
+          <Box sx={{ mt: 3, pt: 2, borderTop: '1px solid #eee' }}>
+            <Typography fontSize={13} color="text.secondary" mb={1}>Seller</Typography>
+            <Typography fontWeight="bold" mb={1}>{seller.username}</Typography>
+            <Button
+              variant="outlined"
+              /*because we don't have a communication feature so we use href to create an email link that they can use to contact the seller */
+              href={'mailto:' + seller.email}
+              sx={{ borderColor: '#2d68c4', color: '#2d68c4', borderRadius: 2 }}
+            >
+              Contact: {seller.email}
+            </Button>
+          </Box>
+        )}
       </Paper>
     </Container>
   )

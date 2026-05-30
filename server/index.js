@@ -14,7 +14,7 @@ const PORT = 9999;
 const JWT_SECRET = 'campustrade_secret_9283749';
 
 
-// i looked up how to use multer on npm docs
+// I looked up how to use multer on npm docs
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, 'uploads/')//cb=callback
@@ -131,6 +131,8 @@ app.delete('/api/listings/:id', authenticateToken, (req, res) => {
 
   res.json({ success: true });
 });
+
+
 
 //POST signup
 app.post('/api/signup', async (req, res) => {
