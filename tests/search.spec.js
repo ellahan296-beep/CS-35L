@@ -19,11 +19,11 @@ test('create listing to search for', async ({page}) => {
 
     await page
         .getByLabel('Username')
-        .fill('testUser');
+        .fill('testUser2');
 
     await page
         .getByLabel('Email')
-        .fill('coconbook@gmail.com')
+        .fill('egoamobook@gmail.com')
 
     await page
         .getByLabel('Password')
