@@ -239,10 +239,13 @@ app.get('/api/profile/:id', async (req, res) => {
 
 // asked Claude - "how do I reset my data before every test?"
 app.post('/test/reset', (req, res) => {
+  //clear the database before each test (alice)
+  db.exec('DELETE FROM listings');
   db.exec('DELETE FROM users');
   res.json({ ok: true });
 });
 // end of AI-generated code, modified to fit my project 
+
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
