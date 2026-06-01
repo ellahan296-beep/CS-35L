@@ -6,6 +6,10 @@ test.beforeAll(async () => {
   await resetDatabase();
 });
 
+test.afterAll(async () => {
+  await resetDatabase();
+});
+
 test.describe.configure({ mode: 'serial' });
 
 test('ensure successful signup for CampusTrade', async ({
@@ -137,5 +141,3 @@ test('invalid login - invalid credentials', async ({
 
   await expect(page.getByText('invalid')).toBeVisible();
 });
-
-await resetDatabase();

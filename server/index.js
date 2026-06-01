@@ -244,6 +244,11 @@ app.post('/test/reset', (req, res) => {
 });
 // end of AI-generated code, modified to fit my project 
 
+app.post('/test/reset/listings', (req, res) => {
+  db.exec('DELETE FROM listings');
+  res.json({ ok: true });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
