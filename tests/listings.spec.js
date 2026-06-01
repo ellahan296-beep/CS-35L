@@ -3,6 +3,7 @@ import { resetDatabase } from './resetDB.js';
 
 test.beforeAll(async (browser) => {
   await resetDatabase();
+  await fetch('http://localhost:9999/test/reset/listings', { method: 'POST' });
   //create a user for testing
   const page = await browser.newPage();
   await page.goto('/signup');

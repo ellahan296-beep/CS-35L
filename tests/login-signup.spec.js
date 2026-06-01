@@ -6,6 +6,10 @@ test.beforeAll(async () => {
   await resetDatabase();
 });
 
+test.afterAll(async () => {
+  await resetDatabase();
+});
+
 test.describe.configure({ mode: 'serial' });
 
 test('ensure successful signup for CampusTrade', async ({
@@ -21,7 +25,7 @@ test('ensure successful signup for CampusTrade', async ({
 
   await page
     .getByLabel('Email')
-    .fill('user@email.com')
+    .fill('coconbook@gmail.com')
 
   await page
     .getByLabel('Password')
@@ -39,7 +43,7 @@ test('ensure successful login to CampusTrade', async ({
   await page.goto('/login');
   await page
     .getByLabel('Email')
-    .fill('user@email.com')
+    .fill('coconbook@gmail.com')
 
   await page
     .getByLabel('Password')
@@ -126,7 +130,7 @@ test('invalid login - invalid credentials', async ({
 
   await page
     .getByLabel('Email')
-    .fill('user@email.com')
+    .fill('coconbook@gmail.com')
 
   await page
     .getByLabel('Password')
@@ -137,5 +141,3 @@ test('invalid login - invalid credentials', async ({
 
   await expect(page.getByText('invalid')).toBeVisible();
 });
-
-await resetDatabase();
