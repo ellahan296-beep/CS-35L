@@ -1,7 +1,6 @@
 # CampusTrade
 A second-hand marketplace for college students. You can post items, browse listings, and search for things you need on campus. Users need a valid email to create an account.
-This project was built by a team of 3 students: Alice Wei, Ella Han, Filly Essai Garcia
-**Note:** One team member dropped the course halfway, so the workload was redistributed among the remaining members. Please grade us accordingly.
+This project was built by a team of 3 students: Alice Wei, Ella Han, Filly Essai Garcia. One team member dropped the course halfway, so the workload was redistributed among the remaining members. Please grade us accordingly.
 ### Tech Stack
 - Frontend: React + Vite + Material UI
 - Backend: Node.js + Express
@@ -84,7 +83,7 @@ SQLite Database (campustrade.db)
 ```
 
 ### Page Flow
-![Page Flow Diagram](docs/page_flow.png)
+![Page Flow Diagram](docs/page_flow1.png)
 
 ### ER Diagram
 ![ER Diagram](docs/entity-relationship-diagram.png)
