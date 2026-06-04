@@ -18,7 +18,7 @@ function Listings({items, handleSold, handleDelete}) {
 
   return (
     <Grid container spacing={3}>
-      {items.map(listing => (
+      {[...items].reverse().map(listing => (
         <Grid item size={{xs: 12, sm: 6, md: 4}} key={listing.id}>
           <Card 
             elevation={2}

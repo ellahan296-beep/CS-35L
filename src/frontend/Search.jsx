@@ -21,7 +21,7 @@ export function Listings({ items })
   return (
   <Container>
     <Grid container spacing={3} sx={{mt: 5}}>
-      {items.map(listing => (
+      {[...items].reverse().map(listing => (
         <Grid item size = {{xs: 12, sm: 6, md: 3}} key={listing.id}>
           <Card elevation = '2' 
           /* for listing detail page navigation */
