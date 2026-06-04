@@ -1,12 +1,14 @@
 # CampusTrade
 A second-hand marketplace for college students. You can post items, browse listings, and search for things you need on campus. Users need a valid email to create an account.
 This project was built by a team of 3 students: Alice Wei, Ella Han, Filly Essai Garcia
-Tech Stack
+
+### Tech Stack
 Frontend: React + Vite + Material UI
 Backend: Node.js + Express
 Database: SQLite
 Auth: bcrypt + JWT
 ### Project Structure
+```
 CS-35L/
 ├── src/                    # frontend code
 │   ├── frontend/           # all the pages
@@ -25,7 +27,7 @@ CS-35L/
 ├── index.js            # all the routes
 ├── database.js         # database setup
 └── uploads/            # uploaded images
-
+```
 ### How to Run Locally:
 Requirements
 Node.js (v18 or higher)
@@ -69,6 +71,7 @@ Make sure both frontend and backend are running, then: bashnpx playwright test
 To view the test report: bashnpx playwright show-report
 
 ### System Architecture
+```
 Browser (React + Vite)
 │
 │  HTTP requests (fetch)
@@ -78,7 +81,7 @@ Express Server (Node.js) — port 9999
 │  SQL queries
 │
 SQLite Database (campustrade.db)
-
+```
 
 ### Page Flow
 ![Page Flow Diagram](docs/page_flow.png)
