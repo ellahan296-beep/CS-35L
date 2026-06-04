@@ -24,7 +24,6 @@ const storage = multer.diskStorage({
   }
 })
 
-
 const upload = multer({ storage })
 
 app.use(cors());//allow cross domain requests
@@ -238,19 +237,32 @@ app.post('/api/login', async (req, res) => {
 
 // PROFILE INFORMATION
 
-// get curr user
 app.get('/api/profile', authenticateToken, async (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
   if (!user) return res.status(404).json({ error: 'User not found' });
   res.json(user);
 });
 
-// get specific user 
 app.get('/api/profile/:id', async (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.id);
   if (!user) return res.status(404).json({ error: 'User not found' });
   res.json(user);
 });
+
+// asked Claude - "how do I reset my data before every test?"
+app.post('/test/reset', (req, res) => {
+  //clear the database before each test (alice)
+  db.exec('DELETE FROM users');
+  res.json({ ok: true });
+});
+// end of AI-generated code, modified to fit my project 
+
+
+app.post('/test/reset/listings', (req, res) => {
+  db.exec('DELETE FROM listings');
+  res.json({ ok: true });
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
