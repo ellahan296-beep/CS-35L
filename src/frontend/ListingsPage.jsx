@@ -5,7 +5,7 @@ import { getListings, markAsSold, deleteListing, getUserListings } from '../serv
 import { getCurrUser } from '../services/profileService.js';
 import { LoadingCircle, NavigationBar } from './Search.jsx'; 
 
-function Listings({items}) {
+function Listings({items, handleSold, handleDelete}) {
   const navigate = useNavigate();
 
   if (items.length === 0) {
@@ -169,7 +169,7 @@ export default function ListingsPage() {
             + Post Item
           </Button>
         </Box>
-        {loading ? <LoadingCircle /> : <Listings items={listings} />}
+        {loading ? <LoadingCircle /> : <Listings items={listings} handleDelete = {handleDelete} handleSold = {handleSold} />}
       </Container>
     </>
   );
