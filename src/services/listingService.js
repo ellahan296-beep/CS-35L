@@ -1,6 +1,6 @@
 const BASE_URL = 'http://localhost:9999/api';
 
-
+/* AI used for guidance on structuring JWT Authorization headers for frontend API requests. */
 function getAuthHeaders() {
   const token = localStorage.getItem('token');
 
@@ -13,6 +13,7 @@ function getJsonAuthHeaders() {
     'Content-Type': 'application/json', ...getAuthHeaders()
   };
 }
+/*end of AI guidance */
 // use in a browse page
 export async function getListings() {
   const res = await fetch(`${BASE_URL}/listings`, {headers: getAuthHeaders() });
