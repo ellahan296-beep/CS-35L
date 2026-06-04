@@ -48,25 +48,33 @@ export default function CreateListing() {
 
 
   async function handleSubmit() {
-    setError('');
-    if (!title || !price || !category || !campus) {
-      setError('Please fill in all required fields');
-      return;
-    }
-    setLoading(true);
-    try {
-    const result = await createListing({ title, description, price: Number(price), category, campus});
-    console.log('listing created:', result)
+  setError('');
+  if (!title || !price || !category || !campus) {
+    setError('Please fill in all required fields');
+    return;
+  }
+  setLoading(true);
+  try {
+    const result = await createListing({ title, description, price: Number(price), category, campus });
+    console.log('listing created:', result);
+    
     if (imageFile) {
-      await uploadImage(result.id, imageFile)
+      try {
+        await uploadImage(result.id, imageFile);
+      } catch (imgErr) {
+        console.log('image upload failed:', imgErr);
+        setError('Listing created, but image upload failed');
+      }
     }
+    
     navigate('/listings');
   } catch (err) {
-     console.log('error:', err)// test point
+    console.log('error:', err);
     setError('Something went wrong, please try again');
+  } finally {
+    setLoading(false);
   }
-  setLoading(false);
-  }
+}
 
   
 
