@@ -1,12 +1,12 @@
 # CampusTrade
 A second-hand marketplace for college students. You can post items, browse listings, and search for things you need on campus. Users need a valid email to create an account.
 This project was built by a team of 3 students: Alice Wei, Ella Han, Filly Essai Garcia
-
+**Note:** One team member dropped the course halfway, so the workload was redistributed among the remaining members. Please grade us accordingly.
 ### Tech Stack
-Frontend: React + Vite + Material UI
-Backend: Node.js + Express
-Database: SQLite
-Auth: bcrypt + JWT
+- Frontend: React + Vite + Material UI
+- Backend: Node.js + Express
+- Database: SQLite
+- Auth: bcrypt + JWT
 ### Project Structure
 ```
 CS-35L/
@@ -61,10 +61,10 @@ Features
 -View your profile
 ### Testing
 We wrote e2e tests using Playwright covering:
--login-signup.spec.js — signup, login, invalid credentials
--listings.spec.js — create listing, view detail, mark as sold, delete listing
--search.spec.js — search by keyword
--profile.spec.js — view profile info
+1. login-signup.spec.js — signup, login, invalid credentials
+2. listings.spec.js — create listing, view detail, mark as sold, delete listing
+3. search.spec.js — search by keyword
+4. profile.spec.js — view profile info
 
 ### Run the tests
 Make sure both frontend and backend are running, then: bashnpx playwright test
