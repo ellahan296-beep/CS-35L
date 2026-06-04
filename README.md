@@ -1,32 +1,15 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-
-CampusTrade
+# CampusTrade
 A second-hand marketplace for college students. You can post items, browse listings, and search for things you need on campus. Users need a valid email to create an account.
+This project was built by a team of 3 students: Alice Wei, Ella Han, Filly Essai Garcia
 Tech Stack
 Frontend: React + Vite + Material UI
 Backend: Node.js + Express
 Database: SQLite
 Auth: bcrypt + JWT
-Project Structure
+### Project Structure
 CS-35L/
-├── src/                  # frontend code
-│   ├── frontend/         # all the pages
+├── src/                    # frontend code
+│   ├── frontend/           # all the pages
 │   │   ├── Login_Signup.jsx
 │   │   ├── dashboard.jsx
 │   │   ├── ListingsPage.jsx
@@ -34,15 +17,16 @@ CS-35L/
 │   │   ├── ListingDetail.jsx
 │   │   ├── Search.jsx
 │   │   └── Profile.jsx
-│   └── services/         # API calls
+│   └── services/           # API calls
 │       ├── authService.js
 │       ├── listingService.js
 │       └── profileService.js
-└── server/               # backend code
-    ├── index.js          # all the routes
-    ├── database.js       # database setup
-    └── uploads/          # uploaded images go here
-How to Run Locally:
+└── server/                 # backend code
+├── index.js            # all the routes
+├── database.js         # database setup
+└── uploads/            # uploaded images
+
+### How to Run Locally:
 Requirements
 Node.js (v18 or higher)
 npm
@@ -73,34 +57,31 @@ Features
 -Mark your listing as sold
 -Delete your listing
 -View your profile
+### Testing
+We wrote e2e tests using Playwright covering:
+-login-signup.spec.js — signup, login, invalid credentials
+-listings.spec.js — create listing, view detail, mark as sold, delete listing
+-search.spec.js — search by keyword
+-profile.spec.js — view profile info
 
-Architecture
-System Architecture
+### Run the tests
+Make sure both frontend and backend are running, then: bashnpx playwright test
+To view the test report: bashnpx playwright show-report
+
+### System Architecture
 Browser (React + Vite)
-        |
-        | HTTP requests (fetch)
-        |
+│
+│  HTTP requests (fetch)
+│
 Express Server (Node.js) — port 9999
-        |
-        | SQL queries
-        |
+│
+│  SQL queries
+│
 SQLite Database (campustrade.db)
 
-Page Flow
-/login or /signup
-        |
-        | login success
-        |
-/dashboard  ──────────────────→  /search
-        |                              
-        | click Listings button        
-        |                              
-/listings  ──→  /listings/new (post a listing)
-        |
-        | click a listing card
-        |
-/listings/:id (listing detail + seller info)
-        |
-        | click seller name
-        |
-/profile
+
+### Page Flow
+![Page Flow Diagram](docs/page_flow.png)
+
+### ER Diagram
+![ER Diagram](docs/entity-relationship-diagram.png)
