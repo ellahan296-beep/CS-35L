@@ -32,7 +32,7 @@ export default function ListingDetail() {
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
       <Button 
-        onClick={() => navigate('/listings')}
+        onClick={() => navigate(-1)}
         sx={{ mb: 2, color: '#2d68c4' }}
       >
         ← Back
