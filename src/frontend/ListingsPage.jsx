@@ -135,13 +135,13 @@ export default function ListingsPage() {
 
   async function handleSold(id) {
     await markAsSold(id);
-    const data = await getListings()
+    const data = await getUserListings(user.id)
     setListings(data)
   }
 
   async function handleDelete(id) {
     await deleteListing(id);
-    const data = await getListings()
+    const data = await getUserListings(user.id)
     setListings(data)
   }
 
