@@ -32,14 +32,12 @@ function App() {
           <Route path='/' element={<Navigate to="/login" />} />
           <Route path='/login' element={<LogIn />} />
           <Route path='/signup' element={<SignUp />} />
-          <Route path='/dashboard' element={<ProtectedRoute> <Dashboard /></ProtectedRoute>} />
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/profile' element = {<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path='/listings' element={<ProtectedRoute><ListingsPage /></ProtectedRoute>} />
           <Route path='/listings/new' element={<ProtectedRoute><CreateListing /></ProtectedRoute>} />
-
           <Route path='/listings/:id' element={<ProtectedRoute><ListingDetail /></ProtectedRoute>} />
-
-          <Route path='/search' element={<ProtectedRoute><Search /></ProtectedRoute>} />
+          <Route path='/search' element={<Search />}/>
 
         </Routes>
       </Router>

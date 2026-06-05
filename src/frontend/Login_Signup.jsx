@@ -11,7 +11,6 @@ export const LogIn = () =>
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     let navigate = useNavigate();
 
     const handleClick = async (e) =>
@@ -22,26 +21,17 @@ export const LogIn = () =>
 
         try
         {
-            const data = await login(email, password);
-            console.log("Login Successful: ", data);
-            localStorage.setItem("token", data.token);
-            setLoading(false);
-            navigate('/dashboard', {replace:true});
+          const data = await login(email, password);
+          console.log("Login Successful: ", data);
+          localStorage.setItem("token", data.token);
+          setLoading(false);
+          navigate('/dashboard', {replace:true});
         }
         catch(err)
         {
-            if (err.status === 401)
-            {
-                setError(err.message)
-                console.error(err.message);
-                setLoading(false);
-            }
-            else
-            {
-                setError(err.message);
-                console.error(err.message);
-                setLoading(false);
-            }
+          setError(err.message);
+          console.error(err.message);
+          setLoading(false);
         }
     }
     return (
@@ -115,6 +105,10 @@ export const LogIn = () =>
             <Link component={RouterLink} to="/signup" sx={{ fontWeight: 'bold', color: '#f2a900'}}>
               Sign Up
             </Link>
+            {' '} or{' '}
+            <Link component={RouterLink} to="/dashboard" sx={{ fontWeight: 'bold', color: '#f2a900' }}>
+              Proceed as Guest
+            </Link>
           </Typography>
         </Box>
       </Container>
@@ -146,18 +140,9 @@ export const SignUp = () =>
         }
         catch(err)
         {
-            if (err.status === 401)
-            {
-                setError(err.message)
-                console.error(err.message);
-                setLoading(false);
-            }
-            else
-            {
-                setError(err.message);
-                console.error(err.message);
-                setLoading(false);
-            }
+          setError(err.message);
+          console.error(err.message);
+          setLoading(false);
         }
     }
     return (

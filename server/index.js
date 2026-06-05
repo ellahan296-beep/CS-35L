@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const db = require('./database');
@@ -10,8 +12,9 @@ const jwt = require('jsonwebtoken');
 
 
 const app = express();
-const PORT = 9999;
-const JWT_SECRET = 'campustrade_secret_9283749';
+const PORT = process.env.PORT || 9999;
+const JWT_SECRET = process.env.JWT_SECRET;
+
 
 
 // I looked up how to use multer on npm docs
@@ -48,20 +51,20 @@ function authenticateToken(req, res, next) {
 }
 
 // GET all listings
-app.get('/api/listings', authenticateToken, (req, res) => {
+app.get('/api/listings', (req, res) => {
   const listings = db.prepare('SELECT * FROM listings').all();
   res.json(listings);
 });
 
 // GET only unsold listings 
-app.get('/api/active-listings', authenticateToken, (req, res) => {
+app.get('/api/active-listings', (req, res) => {
   const listings = db.prepare("SELECT * FROM listings WHERE status = 'active'").all();
   if (!listings) return res.status(404).json({ error: 'Listings not found' });
   res.json(listings);
 });
 
 // GET listings matching a certain 
-app.get('/api/search', authenticateToken, (req, res) => {
+app.get('/api/search', (req, res) => {
   const searchTerm = req.query.term;
   const query = `
     SELECT * FROM listings
