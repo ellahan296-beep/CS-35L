@@ -4,12 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material';
 import { getListings, getActiveListings } from '../services/listingService';
 import { LoadingCircle, Listings } from './Search.jsx'
+import { isLoggedIn } from '../services/profileService.js'
 import '../index.css'
 
 
 export function NavigationBar()
 {
   const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    isLoggedIn()
+    .then(data => {
+      setLoggedIn(data);
+    })
+  }, []);
+
   return(
     <>
     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2}}>
@@ -29,10 +39,10 @@ export function NavigationBar()
         <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/dashboard')}>
             Dashboard
         </Button>
-        <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/listings')}>
+        <Button sx={{fontSize: '1.3rem'}} disabled = {!loggedIn} size="large" onClick={() => navigate('/listings')}>
             Listings
         </Button>
-        <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/profile')}>
+        <Button sx={{fontSize: '1.3rem'}} disabled = {!loggedIn} size="large" onClick={() => navigate('/profile')}>
             My Profile 
         </Button>
         <Button sx={{fontSize: '1.3rem'}} size="large" onClick={() => navigate('/search')}>

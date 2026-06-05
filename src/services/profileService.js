@@ -16,6 +16,20 @@ export async function getCurrUser() {
     return res.json();
 }
 
+export async function isLoggedIn() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${BASE_URL}/profile`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (!res.ok) {
+        return false;
+    }
+    return true;
+}
+
 export async function getUser(id) {
     const res = await fetch(`${BASE_URL}/profile/${id}`);
     if (!res.ok) {
