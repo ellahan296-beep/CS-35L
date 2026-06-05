@@ -135,18 +135,20 @@ app.delete('/api/listings/:id', authenticateToken, (req, res) => {
 });
 
 
-
+/*Used AI to help create very basic framework for sign/login routes, especially for hashing passwords
+and generating/use of jwt tokens. I understand the code as I wrote nearly all the code with small suggestions
+from AI.*/
 //POST signup
 app.post('/api/signup', async (req, res) => {
   const { username, email, password } = req.body;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.edu$/i;
 
   if (!username || !email || !password) {
     return res.status(400).json({ message: 'Username, email, and password are required' });
   }
 
    if (!emailRegex.test(email)) {
-    return res.status(400).json({ message: 'Please enter a valid email address' });
+    return res.status(400).json({ message: 'Please enter a valid edu email address' });
   }
 
   if (username.length < 3) {
@@ -178,6 +180,7 @@ app.post('/api/signup', async (req, res) => {
       JWT_SECRET,
       { expiresIn: '1h' }
     );
+    /*End of ai framework */
 
     res.status(201).json({
       message: 'Account created successfully',
@@ -203,6 +206,8 @@ app.post('/api/login', async (req, res) => {
   }
 
   try {
+    /*Ai used for guidance on authentication framework */
+
     const user = db.prepare(
       'SELECT * FROM users WHERE email = ?'
     ).get(email);
@@ -222,6 +227,7 @@ app.post('/api/login', async (req, res) => {
       JWT_SECRET,
       { expiresIn: '1h' }
     );
+    /* end of AI guidance*/
 
     res.json({
       message: 'Login successful',
