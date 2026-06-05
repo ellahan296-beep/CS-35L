@@ -25,7 +25,7 @@ test('ensure successful signup for CampusTrade', async ({
 
   await page
     .getByLabel('Email')
-    .fill('coconbook@gmail.com')
+    .fill('coconbook@ucla.edu')
 
   await page
     .getByLabel('Password')
@@ -43,7 +43,7 @@ test('ensure successful login to CampusTrade', async ({
   await page.goto('/login');
   await page
     .getByLabel('Email')
-    .fill('coconbook@gmail.com')
+    .fill('coconbook@ucla.edu')
 
   await page
     .getByLabel('Password')
@@ -100,7 +100,7 @@ test('invalid signup - pre-existing user', async ({
 
   await page
     .getByLabel('Email')
-    .fill('valid@email.com')
+    .fill('valid@ucla.edu')
 
   await page
     .getByLabel('Password')
@@ -130,7 +130,7 @@ test('invalid login - invalid credentials', async ({
 
   await page
     .getByLabel('Email')
-    .fill('coconbook@gmail.com')
+    .fill('coconbook@ucla.edu')
 
   await page
     .getByLabel('Password')

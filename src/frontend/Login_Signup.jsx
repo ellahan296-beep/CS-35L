@@ -115,6 +115,10 @@ export const LogIn = () =>
   );
 }
 
+// for the return components of both LogIn and SignUp, I gave gemini the prompt "Make this prettier"
+// after passing in my original code. It updated the typography and added a paper component with a 
+// colored border. The textfields, links, and box were all already there
+
 export const SignUp = () =>
 {
     const [username, setUsername] = useState('');

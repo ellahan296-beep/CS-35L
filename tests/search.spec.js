@@ -23,7 +23,7 @@ test('create listing to search for', async ({page}) => {
 
     await page
         .getByLabel('Email')
-        .fill('egoamobook@gmail.com')
+        .fill('egoamobook@ucla.edu')
 
     await page
         .getByLabel('Password')

@@ -23,7 +23,7 @@ test('ensure profile page displays correct information', async ({page}) => {
 
     await page
         .getByLabel('Email')
-        .fill('bookncoco@gmail.com')
+        .fill('bookncoco@ucla.edu')
 
     await page
         .getByLabel('Password')
