@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const db = require('./database');
@@ -10,8 +12,9 @@ const jwt = require('jsonwebtoken');
 
 
 const app = express();
-const PORT = 9999;
-const JWT_SECRET = 'campustrade_secret_9283749';
+const PORT = process.env.PORT || 9999;
+const JWT_SECRET = process.env.JWT_SECRET;
+
 
 
 // I looked up how to use multer on npm docs
