@@ -11,7 +11,6 @@ export const LogIn = () =>
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     let navigate = useNavigate();
 
     const handleClick = async (e) =>
